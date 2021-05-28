@@ -1,10 +1,12 @@
 import {Component} from 'react';
+import logo from '../../Image/Lâmpada_Verde_Clara_Infantil_Logotipo.png'
+import '../WishList/App.css'
 
 class WishList extends Component{
     constructor(props){
         super(props);
         this.state = {
-            //Nome do estado e valor inicial          
+
             listaDesejo : [],
             descricaoUser : '',
             idUser : 0 
@@ -13,13 +15,10 @@ class WishList extends Component{
 
     buscarDesejo = () => { 
 
-        //FAZ A CHAMADA DA API
         fetch('http://localhost:5000/api/desejos')
 
-        //DEFINE O TIPO DE DADO DO RETORNO DA REQUISIÇÃO EM JSON
         .then(reposta => reposta.json())  
 
-        //ATUALIZA A LISTADESEJO COM OS DADOS DA API
         .then(dados => this.setState({listaDesejo : dados}))
         
         .catch(error => console.log(error))
@@ -32,7 +31,6 @@ class WishList extends Component{
             idUser : 0 
         })
     }
-
 
     Cadastrar = (event) => { 
         event.preventDefault()
@@ -85,55 +83,41 @@ class WishList extends Component{
     }
     render(){
         return(
-            <div>
-                <main>
-                    <section>
-                        <h2>WishList</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID Desejo</th>
-                                    <th>ID Usuario</th>
-                                    <th>Descrição</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {
-                                    this.state.listaDesejo.map((desejo) => {
-                                        return(
-                                            <tr key={desejo.idDesejo}>
-                                                <td>{desejo.idDesejo}</td>
-                                                <td>{desejo.idUsuario}</td>
-                                                <td>{desejo.descricao}</td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                    </section>
-
-                    <section>
-                        <h2>Cadastrar</h2>
+            <body>
+                <section>
+                    <div className="menu">
+                        <img src={logo} alt="" className="img1"></img>
+                    </div>
+                </section>
+                <section>
+                    <div className="Cadastro">
                         <form onSubmit={this.Cadastrar}>
-                            <div>
-                                <input
-                                placeholder = "Descrição"
-                                value = {this.state.descricaoUser}
-                                onChange = {this.atualizaDescricao}
-                                ></input>
-                                <input className="UserId"
-                                placeholder = "Usuario" 
-                                value = {this.state.idUser}
-                                onChange = {this.atualizarId}
-                                type="number"></input>
-                                <button type="submit">Cadastrar</button>
-                            </div>
+                        <input placeholder= "Descrição" value={this.state.descricaoUser} onChange={this.atualizaDescricao} className="descricao"></input>
+                        <input placeholder= "IdUsuario" value={this.state.idUser} onChange={this.atualizarId} className="descricao2"></input>
+                        <button type="submit">Cadastrar</button>
                         </form>
-                    </section>
-                </main>
-            </div>
+                    </div>
+                </section>
+                <section>                 
+                {
+                     this.state.listaDesejo.map((desejo) => {
+                     return(
+                                <div key={desejo.idDesejo} className="desejo">
+                                    <h4>Nome </h4>
+                                    <p>{desejo.idUsuarioNavigation.nome}</p>
+
+                                    <h3 style={{marginTop: 15}}>Descrição</h3>
+                                    <p>{desejo.descricao}</p>
+                              
+                                </div>          
+                            )
+                     })
+                }
+                </section>
+                <footer className="footer">
+                    <img src={logo} className="img1" alt=""></img>
+                </footer>
+            </body>
         )
     }
 }
